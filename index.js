@@ -3,7 +3,6 @@
 var http = require("http");
 var url = require("url");
 
-var pre_url = "http://127.0.0.1:3000/";
 var re = /^\/new\/(https?:\/\/.*)$/;
 var original_url_arr = ["http://www.baidu.com", "http://www.qq.com"];
 var respondseHTML =
@@ -15,6 +14,7 @@ var respondseHTML =
     '</body></html>';
 
 http.createServer(function (request, response) {
+    // console.log(request.headers);
     var pathname = url.parse(request.url).pathname;
     console.log("pathname:" + pathname);
     var result = re.exec(pathname);
@@ -29,7 +29,7 @@ http.createServer(function (request, response) {
         }
         var resultObj = { };
         resultObj.original_url = original_url;
-        resultObj.short_url = pre_url + (index + 1);
+        resultObj.short_url = "https://" + request.headers.host + "/" + (index + 1);
 
         response.writeHead(200, {"Content-Type": "text/plain"});
         response.write(JSON.stringify(resultObj));
